@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="property"
+            type="com.example.restaurants.model.Restaurant" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="338dp">
+
+            <TextView
+                android:id="@+id/titleRestaurant"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:drawableLeft="@drawable/ic_baseline"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{property.name}"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/priceRestaurant" />
+
+            <TextView
+                android:id="@+id/priceRestaurant"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:drawableLeft="@drawable/ic_android"
+                android:text="@{Double.toString(property.price)}"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageRestaurant" />
+
+            <TextView
+                android:id="@+id/addressRestaurant"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:drawableLeft="@drawable/ic_baseline_backup"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{property.address}"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/titleRestaurant" />
+
+            <ImageView
+                android:id="@+id/imageRestaurant"
+                android:layout_width="0dp"
+                android:layout_height="197dp"
+                android:scaleType="fitXY"
+                app:imageUrl="@{property.image_url}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.106"
+                tools:src="@tools:sample/backgrounds/scenic" />
+
+            <ImageView
+                android:id="@+id/favouriteImage"
+                android:layout_width="48dp"
+                android:layout_height="51dp"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.955"
+                app:layout_constraintStart_toEndOf="@+id/addressRestaurant"
+                app:layout_constraintTop_toBottomOf="@+id/imageRestaurant"
+                app:layout_constraintVertical_bias="0.539"
+                app:srcCompat="@drawable/heart" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

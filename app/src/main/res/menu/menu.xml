@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group >
+        <item
+            android:id="@+id/listFragment"
+            android:icon="@android:drawable/ic_dialog_dialer"
+            android:title="Restaurants" />
+        <item
+            android:id="@+id/informationFragment"
+            android:icon="@android:drawable/ic_menu_info_details"
+            android:title="Profile" />
+    </group>
+</menu>

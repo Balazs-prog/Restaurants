@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.restaurants.ui.RestaurantViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/frameLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragments.InformationFragment">
+
+        <EditText
+            android:id="@+id/profileName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:enabled="false"
+            android:singleLine="true"
+            android:text="@{viewModel.user.name}"
+            android:textSize="36sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.049" />
+
+        <ImageView
+            android:id="@+id/profilePicture"
+            android:layout_width="200dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="36dp"
+            app:imageUrl="@{viewModel.user.picture}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileName"
+            app:layout_constraintVertical_bias="0.0"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <EditText
+            android:id="@+id/profileAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="60dp"
+            android:clickable="false"
+            android:enabled="false"
+            android:singleLine="true"
+            android:text="@{viewModel.user.address}"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profilePicture" />
+
+        <EditText
+            android:id="@+id/profileEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:clickable="false"
+            android:enabled="false"
+            android:singleLine="true"
+            android:text="@{viewModel.user.email}"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="@+id/profilePhone"
+            app:layout_constraintTop_toBottomOf="@+id/profilePhone" />
+
+        <EditText
+            android:id="@+id/profilePhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:clickable="false"
+            android:enabled="false"
+            android:singleLine="true"
+            android:text="@{viewModel.user.phone}"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="@+id/profileAddress"
+            app:layout_constraintTop_toBottomOf="@+id/profileAddress" />
+
+        <EditText
+            android:id="@+id/profileFavourites"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="68dp"
+            android:clickable="false"
+            android:editable="false"
+            android:enabled="false"
+            android:singleLine="false"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileEmail" />
+
+        <Button
+            android:id="@+id/favouritesButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginBottom="10dp"
+            android:text="Favourites"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileEmail" />
+
+        <Button
+            android:id="@+id/profilePicChange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="136dp"
+            android:text="Change"
+            android:visibility="invisible"
+            app:layout_constraintStart_toEndOf="@+id/profilePicture"
+            app:layout_constraintTop_toBottomOf="@+id/profileName" />
+
+        <Button
+            android:id="@+id/editInformation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:text="Edit Profile"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/favouritesButton" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

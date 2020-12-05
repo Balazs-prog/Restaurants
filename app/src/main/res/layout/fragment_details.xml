@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="property"
+            type="com.example.restaurants.model.Restaurant" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragments.DetailsFragment">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/restaurantName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{property.name}"
+                android:textSize="30sp"
+                android:layout_gravity="center"
+                />
+
+            <ImageView
+                android:id="@+id/restaurantImage"
+                android:layout_width="412dp"
+                android:layout_height="209dp"
+                android:scaleType="fitXY"
+                app:imageUrl="@{property.image_url}"
+                android:src="@drawable/ic_launcher_background" />
+
+            <TextView
+                android:id="@+id/restaurantAdress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_bank"
+                android:text="@{property.address}"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/restaurantCountry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_bank"
+                android:text="@{property.country}"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/restaurantCity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_bank"
+                android:text="@{property.city}"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/restaurantArea"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_bank"
+                android:text="@{property.area}"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/restaurantState"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_bank"
+                android:text="@{property.state}"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/restaurantPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="phone"
+                android:drawableLeft="@android:drawable/stat_sys_phone_call_forward"
+                android:text="@{property.phone}"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/restaurantPostal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@android:drawable/ic_dialog_email"
+                android:text="@{property.postal_code}"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/restaurantPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_dollar_sign_svgrepo_com"
+                android:text="@{Double.toString(property.price)}"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Map" />
+
+            <Button
+                android:id="@+id/changeImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Change image" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
