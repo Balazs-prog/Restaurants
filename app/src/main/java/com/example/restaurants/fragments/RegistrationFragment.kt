@@ -49,15 +49,7 @@ class RegistrationFragment : Fragment() {
             context?.let { Injection.provideViewModelFactory(it) })
             .get(RestaurantViewModel::class.java)
         val register = binding.root.findViewById<Button>(R.id.register)
-        register.setOnClickListener{
-            val name = binding.root.findViewById<EditText>(R.id.name)
-            val address = binding.root.findViewById<EditText>(R.id.address)
-            val phone = binding.root.findViewById<EditText>(R.id.phone)
-            val email = binding.root.findViewById<EditText>(R.id.email)
-            viewModel.addUser(name.text.toString(),email.text.toString(),address.text.toString(),phone.text.toString(),"temp")
-
-            binding.root.let { Navigation.findNavController(it).navigate(R.id.listFragment) }
-        }
+        register.setOnClickListener{ registerOnClickListener(binding) }
 
         return binding.root
     }
@@ -66,7 +58,15 @@ class RegistrationFragment : Fragment() {
         super.onDestroyView()
         (activity as MainActivity?)?.setBottomNavVisible()
     }
+    fun registerOnClickListener(binding:FragmentRegistrationBinding){
+        val name = binding.root.findViewById<EditText>(R.id.name)
+        val address = binding.root.findViewById<EditText>(R.id.address)
+        val phone = binding.root.findViewById<EditText>(R.id.phone)
+        val email = binding.root.findViewById<EditText>(R.id.email)
+        viewModel.addUser(name.text.toString(),email.text.toString(),address.text.toString(),phone.text.toString(),"temp")
 
+        binding.root.let { Navigation.findNavController(it).navigate(R.id.listFragment) }
+    }
     companion object {
         /**
          * Use this factory method to create a new instance of

@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.observe
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.example.restaurants.Injection
@@ -84,49 +85,16 @@ class InformationFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         viewModel.searchUserAndFavourites(1)
-        binding.root.findViewById<Button>(R.id.favouritesButton).setOnClickListener {
-            val bundle = bundleOf("clickFavourite" to 1)
-                view?.let { Navigation.findNavController(it).navigate(R.id.listFragment,bundle) }
-            }
-        binding.root.findViewById<Button>(R.id.editInformation).setOnClickListener {
-            val phone = view?.findViewById<EditText>(R.id.profilePhone)!!
-            phone?.isEnabled = !phone?.isEnabled!!
+        binding.root.findViewById<Button>(R.id.favouritesButton).setOnClickListener { favouritesButtonClickListener() }
+        binding.root.findViewById<Button>(R.id.editInformation).setOnClickListener { editInformationClickListener() }
 
-            val email = view?.findViewById<EditText>(R.id.profileEmail)!!
-            email?.isEnabled  = !email?.isEnabled!!
-
-            val address = view?.findViewById<EditText>(R.id.profileAddress)!!
-            address?.isEnabled  = !address?.isEnabled!!
-
-            val name = view?.findViewById<EditText>(R.id.profileName)!!
-            name?.isEnabled  = !name?.isEnabled!!
-
-
-            if(!phone?.isEnabled!!){
-                view?.findViewById<Button>(R.id.profilePicChange)?.visibility = View.INVISIBLE
-                viewModel.updateUser(name.text.toString(),email.text.toString(),phone.text.toString(),address.text.toString(),viewModel.user.value?.id)
-                Log.d("InformationFragment", viewModel.user.value?.id.toString())
-            }else{
-                view?.findViewById<Button>(R.id.profilePicChange)?.visibility = View.VISIBLE
-            }
+        viewModel.user!!.observe(viewLifecycleOwner) {
+            Glide.with(this)
+                    .load(it.picture)
+                    .into(view?.findViewById<ImageView>(R.id.profilePicture)!!)
         }
 
-        binding.root.findViewById<Button>(R.id.profilePicChange).setOnClickListener {
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if(context?.checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                    val permissions = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-                    requestPermissions(permissions,
-                            PERMISSION_CODE
-                    )
-                } else {
-                    pickImageFromGallery()
-                }
-            } else {
-                pickImageFromGallery()
-            }
-        }
-
-
+        binding.root.findViewById<Button>(R.id.profilePicChange).setOnClickListener { profilePicChangeClickListener() }
 
         return binding.root
     }
@@ -136,6 +104,46 @@ class InformationFragment : Fragment() {
         intent.type = "image/*"
         startActivityForResult(intent, InformationFragment.IMAGE_PICK_CODE)
         return true
+    }
+    fun profilePicChangeClickListener(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if(context?.checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                val permissions = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                requestPermissions(permissions,
+                        PERMISSION_CODE
+                )
+            } else {
+                pickImageFromGallery()
+            }
+        } else {
+            pickImageFromGallery()
+        }
+    }
+    fun editInformationClickListener(){
+        val phone = view?.findViewById<EditText>(R.id.profilePhone)!!
+        phone?.isEnabled = !phone?.isEnabled!!
+
+        val email = view?.findViewById<EditText>(R.id.profileEmail)!!
+        email?.isEnabled  = !email?.isEnabled!!
+
+        val address = view?.findViewById<EditText>(R.id.profileAddress)!!
+        address?.isEnabled  = !address?.isEnabled!!
+
+        val name = view?.findViewById<EditText>(R.id.profileName)!!
+        name?.isEnabled  = !name?.isEnabled!!
+
+
+        if(!phone?.isEnabled!!){
+            view?.findViewById<Button>(R.id.profilePicChange)?.visibility = View.INVISIBLE
+            viewModel.updateUser(name.text.toString(),email.text.toString(),phone.text.toString(),address.text.toString(),viewModel.user.value?.id)
+            Log.d("InformationFragment", viewModel.user.value?.id.toString())
+        }else{
+            view?.findViewById<Button>(R.id.profilePicChange)?.visibility = View.VISIBLE
+        }
+    }
+    fun favouritesButtonClickListener(){
+        val bundle = bundleOf("clickFavourite" to 1)
+        view?.let { Navigation.findNavController(it).navigate(R.id.listFragment,bundle) }
     }
     //handle requested permission result
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray){
@@ -157,9 +165,6 @@ class InformationFragment : Fragment() {
         if (resultCode == Activity.RESULT_OK && requestCode == InformationFragment.IMAGE_PICK_CODE){
             Log.d("InformationFragment", data?.data.toString())
             Log.d("InformationFragment", viewModel.user.value?.id.toString())
-            Glide.with(this)
-                    .load(data?.data)
-                    .into(view?.findViewById<ImageView>(R.id.profilePicture)!!)
             binding.viewModel?.updateImageUser(data?.data.toString(),viewModel.user.value?.id)
             //view?.findViewById<ImageView>(R.id.profilePicture)!!.setImageURI(data?.data)
         }
@@ -167,6 +172,9 @@ class InformationFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         //listFavourites()
+        Log.d("InformationFragmenttt", viewModel.user.value?.id.toString())
+        Log.d("InformationFragmenttt", viewModel.user.value?.picture.toString())
+
     }
     fun listFavourites(){
         val textView: TextView = view?.findViewById(R.id.profileFavourites)!!

@@ -38,7 +38,6 @@
                 android:layout_width="412dp"
                 android:layout_height="209dp"
                 android:scaleType="fitXY"
-                app:imageUrl="@{property.image_url}"
                 android:src="@drawable/ic_launcher_background" />
 
             <TextView
