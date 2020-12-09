@@ -28,10 +28,10 @@
                 android:id="@+id/restaurantName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{property.name}"
-                android:textSize="30sp"
                 android:layout_gravity="center"
-                />
+                android:paddingLeft="5dp"
+                android:text="@{property.name}"
+                android:textSize="30sp" />
 
             <ImageView
                 android:id="@+id/restaurantImage"
@@ -45,6 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_bank"
+                android:paddingLeft="5dp"
                 android:text="@{property.address}"
                 android:textSize="18sp" />
 
@@ -53,6 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_bank"
+                android:paddingLeft="5dp"
                 android:text="@{property.country}"
                 android:textSize="18sp" />
 
@@ -61,6 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_bank"
+                android:paddingLeft="5dp"
                 android:text="@{property.city}"
                 android:textSize="18sp" />
 
@@ -69,6 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_bank"
+                android:paddingLeft="5dp"
                 android:text="@{property.area}"
                 android:textSize="18sp" />
 
@@ -77,6 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_bank"
+                android:paddingLeft="5dp"
                 android:text="@{property.state}"
                 android:textSize="18sp" />
 
@@ -86,6 +91,7 @@
                 android:layout_height="wrap_content"
                 android:autoLink="phone"
                 android:drawableLeft="@android:drawable/stat_sys_phone_call_forward"
+                android:paddingLeft="5dp"
                 android:text="@{property.phone}"
                 android:textSize="18sp" />
 
@@ -94,6 +100,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@android:drawable/ic_dialog_email"
+                android:paddingLeft="5dp"
                 android:text="@{property.postal_code}"
                 android:textSize="18sp" />
 
@@ -102,6 +109,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_dollar_sign_svgrepo_com"
+                android:paddingLeft="5dp"
                 android:text="@{Double.toString(property.price)}"
                 android:textSize="18sp" />
 

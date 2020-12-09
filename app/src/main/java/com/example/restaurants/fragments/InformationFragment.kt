@@ -59,6 +59,7 @@ class InformationFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
     }
+
     private fun changeEditText(editText: EditText) {
         editText.isFocusable = !editText.isFocusable
         editText.isEnabled = !editText.isEnabled
@@ -71,6 +72,7 @@ class InformationFragment : Fragment() {
         }
 
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -98,6 +100,7 @@ class InformationFragment : Fragment() {
 
         return binding.root
     }
+
     private fun pickImageFromGallery():Boolean {
         //Intent to pick image
         val intent = Intent(Intent.ACTION_PICK)
@@ -105,7 +108,8 @@ class InformationFragment : Fragment() {
         startActivityForResult(intent, InformationFragment.IMAGE_PICK_CODE)
         return true
     }
-    fun profilePicChangeClickListener(){
+
+    private fun profilePicChangeClickListener(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if(context?.checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                 val permissions = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -119,7 +123,8 @@ class InformationFragment : Fragment() {
             pickImageFromGallery()
         }
     }
-    fun editInformationClickListener(){
+
+    private fun editInformationClickListener(){
         val phone = view?.findViewById<EditText>(R.id.profilePhone)!!
         phone?.isEnabled = !phone?.isEnabled!!
 
@@ -141,10 +146,12 @@ class InformationFragment : Fragment() {
             view?.findViewById<Button>(R.id.profilePicChange)?.visibility = View.VISIBLE
         }
     }
-    fun favouritesButtonClickListener(){
+
+    private fun favouritesButtonClickListener(){
         val bundle = bundleOf("clickFavourite" to 1)
         view?.let { Navigation.findNavController(it).navigate(R.id.listFragment,bundle) }
     }
+
     //handle requested permission result
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray){
         when(requestCode){
@@ -160,6 +167,7 @@ class InformationFragment : Fragment() {
             }
         }
     }
+
     //handle result of picked image
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && requestCode == InformationFragment.IMAGE_PICK_CODE){
@@ -169,6 +177,7 @@ class InformationFragment : Fragment() {
             //view?.findViewById<ImageView>(R.id.profilePicture)!!.setImageURI(data?.data)
         }
     }
+
     override fun onResume() {
         super.onResume()
         //listFavourites()
@@ -176,6 +185,7 @@ class InformationFragment : Fragment() {
         Log.d("InformationFragmenttt", viewModel.user.value?.picture.toString())
 
     }
+
     fun listFavourites(){
         val textView: TextView = view?.findViewById(R.id.profileFavourites)!!
         var restaurantString:String = "Favourites: "

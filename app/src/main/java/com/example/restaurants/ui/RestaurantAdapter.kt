@@ -16,13 +16,11 @@
 
 package com.example.restaurants.ui
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.navigation.Navigation
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -33,7 +31,7 @@ import com.example.restaurants.model.Restaurant
 /**
  * Adapter for the list of repositories.
  */
-class RestaurantAdapter(val viewModel:RestaurantViewModel) : PagedListAdapter<Restaurant, androidx.recyclerview.widget.RecyclerView.ViewHolder>(RESTAURANT_COMPARATOR) {
+class RestaurantAdapter(val viewModel:RestaurantViewModel,private val listener: OnItemClickListener) : PagedListAdapter<Restaurant, androidx.recyclerview.widget.RecyclerView.ViewHolder>(RESTAURANT_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
         val vw = LayoutInflater.from(parent.context)
@@ -57,7 +55,7 @@ class RestaurantAdapter(val viewModel:RestaurantViewModel) : PagedListAdapter<Re
                     oldItem == newItem
         }
     }
-    inner class RestaurantViewHolder(view: View) : RecyclerView.ViewHolder(view){
+    inner class RestaurantViewHolder(view: View) : RecyclerView.ViewHolder(view),View.OnClickListener{
         private val name: TextView = view.findViewById(R.id.titleRestaurant)
         private val address: TextView = view.findViewById(R.id.addressRestaurant)
         private val price: TextView = view.findViewById(R.id.priceRestaurant)
@@ -66,28 +64,17 @@ class RestaurantAdapter(val viewModel:RestaurantViewModel) : PagedListAdapter<Re
         private var restaurant: Restaurant? = null
 
         init {
-            view.findViewById<ImageView>(R.id.imageRestaurant).setOnClickListener {
-                restaurant?.image_url?.let { url ->
-                    RestaurantViewModel.select(restaurant!!)
-                    view?.let { Navigation.findNavController(it).navigate(R.id.detailsFragment) }
-                }
-            }
-            view.findViewById<ImageView>(R.id.favouriteImage).setOnClickListener {
-                Log.d("RestaurantAdapter", restaurant?.favourite.toString())
-                if(restaurant?.favourite == 1) {
-                    viewModel.updateFavourites(0,restaurant?.id)
-                    Glide.with(itemView)
-                            .load(R.drawable.heart_filled)
-                            .into(imageFav)
-                }else{
-                    viewModel.updateFavourites(1,restaurant?.id)
-                    Glide.with(itemView)
-                            .load(R.drawable.heart)
-                            .into(imageFav)
-                }
-                notifyItemChanged(adapterPosition)
+            itemView.findViewById<ImageView>(R.id.imageRestaurant).setOnClickListener(this)
+            itemView.findViewById<ImageView>(R.id.favouriteImage).setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            val position = adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                listener.onItemClick(restaurant,v!!.id,itemView,imageFav,position)
             }
         }
+
         fun bind(restaurant: Restaurant?) {
 
             if (restaurant == null) {
@@ -119,6 +106,7 @@ class RestaurantAdapter(val viewModel:RestaurantViewModel) : PagedListAdapter<Re
             Glide.with(itemView)
                     .load(restaurant.image_url)
                     .into(image)
+
             if(restaurant.favourite == 1) {
                 Glide.with(itemView)
                         .load(R.drawable.heart_filled)
@@ -132,8 +120,7 @@ class RestaurantAdapter(val viewModel:RestaurantViewModel) : PagedListAdapter<Re
         }
     }
     interface OnItemClickListener {
-        fun onItemClick(position: Int)
-        fun onItemLongClick(position: Int)
+        fun onItemClick(restaurant: Restaurant?, id: Int, itemView: View, imageFav: ImageView, position: Int)
     }
 
 }

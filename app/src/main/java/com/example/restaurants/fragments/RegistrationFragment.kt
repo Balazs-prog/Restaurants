@@ -1,11 +1,14 @@
 package com.example.restaurants.fragments
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
@@ -51,6 +54,20 @@ class RegistrationFragment : Fragment() {
         val register = binding.root.findViewById<Button>(R.id.register)
         register.setOnClickListener{ registerOnClickListener(binding) }
 
+        /*
+        when (PackageManager.PERMISSION_GRANTED) {
+            ContextCompat.checkSelfPermission(
+                    binding.root.context,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+            ) -> {
+            }
+            else -> {
+                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                        PERMISSION_CODE)
+            }
+        }
+        */
+
         return binding.root
     }
 
@@ -58,7 +75,7 @@ class RegistrationFragment : Fragment() {
         super.onDestroyView()
         (activity as MainActivity?)?.setBottomNavVisible()
     }
-    fun registerOnClickListener(binding:FragmentRegistrationBinding){
+    private fun registerOnClickListener(binding:FragmentRegistrationBinding){
         val name = binding.root.findViewById<EditText>(R.id.name)
         val address = binding.root.findViewById<EditText>(R.id.address)
         val phone = binding.root.findViewById<EditText>(R.id.phone)
@@ -68,6 +85,10 @@ class RegistrationFragment : Fragment() {
         binding.root.let { Navigation.findNavController(it).navigate(R.id.listFragment) }
     }
     companion object {
+        //image pick code
+        private val IMAGE_PICK_CODE = 1000;
+        //Permission code
+        private val PERMISSION_CODE = 1001;
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.

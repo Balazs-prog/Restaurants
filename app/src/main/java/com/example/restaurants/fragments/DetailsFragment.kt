@@ -92,7 +92,7 @@ class DetailsFragment : Fragment() {
         return true
     }
 
-    fun changeImageClickListener(binding:FragmentDetailsBinding){
+    private fun changeImageClickListener(binding:FragmentDetailsBinding){
         when (PackageManager.PERMISSION_GRANTED) {
             ContextCompat.checkSelfPermission(
                     binding.root.context,
@@ -137,29 +137,6 @@ class DetailsFragment : Fragment() {
     }
     override fun onResume() {
         super.onResume()
-        /*
-        val restaurant = arguments?.getInt("position")
-        val name = view?.findViewById<TextView>(R.id.restaurantName)
-        val type = view?.findViewById<TextView>(R.id.restaurantAdress)
-        val calories = view?.findViewById<TextView>(R.id.restaurantCity)
-        val description = view?.findViewById<TextView>(R.id.restaurantState)
-        val image = view?.findViewById<ImageView>(R.id.restaurantImage)
-        image?.setImageResource(R.drawable.ic_launcher_background)
-        if (name != null) {
-           // name.text = obj?.text1
-        }
-        if (type != null) {
-            //type.text = obj?.text2
-        }
-        if (calories != null) {
-            //calories.text = obj?.text3.toString()
-        }
-        if (description != null) {
-            //description.text = obj?.description
-        }
-
-         */
-        //val restaurantId = arguments?.getLong("id")
         val name = view?.findViewById<TextView>(R.id.restaurantName)
         Log.d("DetailsFragment", "Restaurant name: ${name?.text}")
 

@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,7 +34,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ListFragment : Fragment() {
+class ListFragment : Fragment(),RestaurantAdapter.OnItemClickListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -58,15 +59,17 @@ class ListFragment : Fragment() {
         viewModel = ViewModelProviders.of(this,
                 context?.let { Injection.provideViewModelFactory(it) })
                 .get(RestaurantViewModel::class.java)
-        adapter = RestaurantAdapter(viewModel)
+        adapter = RestaurantAdapter(viewModel,this)
+
         val binding = FragmentListBinding.inflate(inflater)
         val listFavourites = binding.root.findViewById<ImageView>(R.id.listFavourites)
         // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
         binding.lifecycleOwner = this
-        // Giving the binding access to the OverviewViewModel
+        // Giving the binding access to the ViewModel
         binding.viewModel = viewModel
-        // Sets the adapter of the photosGrid RecyclerView
+        // Sets the adapter of the RecyclerView
         binding.recycler.adapter = adapter
+
         val linearLayoutManager:LinearLayoutManager = LinearLayoutManager(context)
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         binding.recycler.layoutManager = linearLayoutManager
@@ -79,31 +82,57 @@ class ListFragment : Fragment() {
         }else{
             fav = 1
         }
+
         viewModel.searchRepo(query,fav)
         initSearch(query,binding)
 
-        listFavourites.setOnClickListener{
-            val listFavouritess = binding.root.findViewById<ImageView>(R.id.listFavourites)
-            Log.d("ListFragment", listFavouritess.tag.toString())
-            if(listFavouritess.getTag() != R.drawable.heart_filled) {
-                Glide.with(this)
-                    .load(R.drawable.heart_filled)
-                    .into(listFavouritess)
-                listFavouritess.tag = R.drawable.heart_filled
-                fav = 1
-            }else{
-                Glide.with(this)
-                    .load(R.drawable.heart)
-                    .into(listFavouritess)
-                fav = 0
-                listFavouritess.tag = R.drawable.heart
-            }
-            binding.recycler.scrollToPosition(0)
-            viewModel.searchRepo(query,fav)
-            adapter.submitList(null)
-        }
+        listFavourites.setOnClickListener{ listFavouritesOnClickListener(binding,query) }
 
         return binding.root
+    }
+
+    private fun listFavouritesOnClickListener(binding: FragmentListBinding, query: String) {
+        val listFavouritess = binding.root.findViewById<ImageView>(R.id.listFavourites)
+        Log.d("ListFragment", listFavouritess.tag.toString())
+        if(listFavouritess.getTag() != R.drawable.heart_filled) {
+            Glide.with(this)
+                    .load(R.drawable.heart_filled)
+                    .into(listFavouritess)
+            listFavouritess.tag = R.drawable.heart_filled
+            fav = 1
+        }else{
+            Glide.with(this)
+                    .load(R.drawable.heart)
+                    .into(listFavouritess)
+            fav = 0
+            listFavouritess.tag = R.drawable.heart
+        }
+        binding.recycler.scrollToPosition(0)
+        viewModel.searchRepo(query,fav)
+        adapter.submitList(null)
+    }
+
+    //->RestaurantAdapter
+    override fun onItemClick(restaurant: Restaurant?, id: Int, itemView: View, imageFav: ImageView, position: Int) {
+        if(id == R.id.imageRestaurant){
+            restaurant?.image_url?.let { url ->
+                RestaurantViewModel.select(restaurant!!)
+                view?.let { Navigation.findNavController(it).navigate(R.id.detailsFragment) }
+            }
+        }else{
+            if(restaurant?.favourite == 1) {
+                viewModel.updateFavourites(0,restaurant?.id)
+                Glide.with(itemView)
+                        .load(R.drawable.heart_filled)
+                        .into(imageFav)
+            }else{
+                viewModel.updateFavourites(1,restaurant?.id)
+                Glide.with(itemView)
+                        .load(R.drawable.heart)
+                        .into(imageFav)
+            }
+            adapter.notifyItemChanged(position)
+        }
     }
 
     override fun onResume() {
@@ -174,51 +203,7 @@ class ListFragment : Fragment() {
         }
     }
 
-
-
-/*
-    override fun onItemClick(position: Int) {
-        val bundle = bundleOf("position" to position)
-        view?.let { Navigation.findNavController(it).navigate(R.id.detailsFragment, bundle) }
-    }
-    override fun onItemLongClick(position: Int){
-        val builder: AlertDialog.Builder? = activity?.let {
-            AlertDialog.Builder(it)
-        }
-        val dialog: AlertDialog? = builder?.create()
-        val alertDialog: AlertDialog? = activity?.let {
-            val builder = AlertDialog.Builder(it)
-            builder.apply {
-                setPositiveButton("Yes",
-                    DialogInterface.OnClickListener { dialog, id ->
-                        Constants.foods.removeAt(position)
-                        adapter.notifyItemRemoved(position)
-                    })
-                setNegativeButton("No",
-                    DialogInterface.OnClickListener { dialog, id ->
-                        // User cancelled the dialog
-                    })
-            }
-            builder?.setMessage("Are you sure you want to delete this item ?")
-                ?.setTitle("Delete")
-            builder.create()
-            builder.show()
-        }*/
-/*
-    private fun generateDummyList(size: Int): List<Food> {
-        val list = ArrayList<Food>()
-        for (i in 0 until size) {
-            val drawable = when (i % 3) {
-                0 -> R.drawable.ic_android
-                1 -> R.drawable.ic_baseline
-                else -> R.drawable.ic_baseline_backup
-            }
-            val item = Food(drawable, "Item $i", "Line 2", 3,"das")
-            list += item
-        }
-        return list
-    }
- */    /**
+    /**
      * Inflates the overflow menu that contains filtering options.
      */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
